@@ -1,0 +1,14 @@
+fastapi==0.99.1
+uvicorn
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+evidently # Pour le monitoring et valider la compétence D-06
+streamlit
+plotly
+pytest
+httpx==0.24.1
+xgboost
+shap

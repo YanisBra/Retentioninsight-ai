@@ -1,4 +1,8 @@
 venv/
+.venv/
 __pycache__/
+*.pyc
+.pytest_cache/
+cours/
+projet.md
 *.ipynb_checkpoints/
-data/raw/
