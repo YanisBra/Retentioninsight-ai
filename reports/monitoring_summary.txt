@@ -1,0 +1,30 @@
+============================================================
+  MONITORING SUMMARY — RetentionInsight AI
+============================================================
+  Date génération : 2026-09-02 18:12
+
+  [PERFORMANCE]
+  AUC-ROC Train  : 0.8957
+  AUC-ROC Test   : 0.8461
+  |ΔAUC|         : 0.0496
+  Accuracy Test  : 0.7601
+  F1-Score Test  : 0.6350
+
+  [DATA DRIFT — Top 5 features avec le plus grand écart de moyenne]
+  TotalCharges                             Δmoy=96.9830
+  MonthlyCharges                           Δmoy=0.8411
+  tenure                                   Δmoy=0.5695
+  OnlineBackup_Yes                         Δmoy=0.0310
+  StreamingTV_Yes                          Δmoy=0.0253
+
+  [CLASSIFICATION REPORT]
+              precision    recall  f1-score   support
+
+           0       0.91      0.75      0.82      1035
+           1       0.53      0.79      0.63       374
+
+    accuracy                           0.76      1409
+   macro avg       0.72      0.77      0.73      1409
+weighted avg       0.81      0.76      0.77      1409
+
+============================================================
