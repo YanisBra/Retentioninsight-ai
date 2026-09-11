@@ -6,3 +6,6 @@ __pycache__/
 cours/
 projet.md
 *.ipynb_checkpoints/
+SOUTENANCE_*.md
+presentation.html
+presentation.pptx
