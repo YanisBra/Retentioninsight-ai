@@ -1,12 +1,6 @@
 """
 5_monitoring.py — Monitoring de la dérive des données et des performances
 
-Projet  : RetentionInsight AI
-Auteur  : Équipe Data Science
-
-Compétence visée : D-06 — Piloter la performance de la solution d'IA via
-des outils de monitoring.
-
 Ce script génère deux rapports HTML auto-contenus dans reports/ :
     1. data_drift_report.html       : dérive statistique des features (Train→Test)
     2. model_performance_report.html: performances du modèle (ROC, matrice, F1)

@@ -11,7 +11,7 @@
 
 Le projet couvre l'intégralité du cycle de vie ML :
 - Exploration et audit de qualité des données (EDA)
-- Nettoyage, encodage et optimisation de la mémoire RAM
+- Nettoyage, encodage et préparation des données
 - Modélisation, optimisation d'hyperparamètres et validation croisée sans fuite
 - Diagnostic de généralisation et analyse de l'overfitting
 - Explicabilité moderne (SHAP, Permutation Importance)
@@ -30,7 +30,7 @@ RetentionInsight AI/
 │   └── processed_telco.csv                        # Dataset nettoyé et préparé
 │
 ├── 1_eda.ipynb                 # Étape 1 : Analyse exploratoire descriptive (EDA)
-├── 2_cleaning.py               # Étape 2 : Nettoyage, typage et optimisation RAM
+├── 2_cleaning.py               # Étape 2 : Nettoyage, typage et encodage
 ├── 3_modeling.py               # Étape 3 : Pipeline d'entraînement, tuning, ROC & SHAP
 ├── 4_dashboard.py              # Étape 4 : Visualisation & Simulateur Streamlit
 ├── 5_monitoring.py             # Étape 5 : Suivi de dérive (Data & Model Drift)
@@ -58,7 +58,7 @@ Données brutes (CSV)
 [1_eda.ipynb]          ← Étape 1 : Analyse exploratoire & audit de qualité
         │
         ▼
-[2_cleaning.py]        ← Étape 2 : Nettoyage, imputation & downcasting RAM
+[2_cleaning.py]        ← Étape 2 : Nettoyage, imputation & encodage
         │
         ▼  data/processed_telco.csv
         │
@@ -157,8 +157,7 @@ Le projet applique les principes de développement logiciel appliqués à la Dat
    - Audit complet des valeurs manquantes (`NaN`) et imputation documentée.
    - Utilisation de copies explicites (`.copy()`) et proscription de `inplace=True`.
 
-3. **Optimisation des ressources matérielles** :
-   - Downcasting systématique des entiers et flottants (`float32`), réduisant l'empreinte mémoire de **96,5 %**.
+3. **Performance des calculs** :
    - Parallélisation multi-cœurs (`n_jobs=-1`) sur tous les estimateurs et recherches de grille.
 
 4. **Reproductibilité** :

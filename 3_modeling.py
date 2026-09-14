@@ -1,8 +1,5 @@
 """
-3_modeling.py — Pipeline de Modélisation Consolidé (Niveau M2)
-
-Projet  : RetentionInsight AI
-Auteur  : Équipe Data Science
+3_modeling.py — Pipeline de modélisation et évaluation Machine Learning
 
 Ce script orchestre l'ensemble du cycle de modélisation du projet :
     1. Chargement du dataset nettoyé et split stratifié 80/20.

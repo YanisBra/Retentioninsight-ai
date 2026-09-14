@@ -1,17 +1,13 @@
 """
 2_cleaning.py — Script de nettoyage et préparation des données Telco
 
-Projet  : RetentionInsight AI
-Auteur  : Équipe Data Science
-
 Étapes :
     1. Chargement du CSV brut
     2. Audit des NaN avant transformation
     3. Conversion de TotalCharges en float (errors='coerce') + imputation médiane
     4. Encodage one-hot des variables catégorielles (drop_first=True)
     5. StandardScaler sur tenure, MonthlyCharges, TotalCharges
-    6. Optimisation RAM (dtypes)
-    7. Sauvegarde dans data/processed_telco.csv
+    6. Sauvegarde dans data/processed_telco.csv
 """
 
 import pandas as pd
@@ -115,9 +111,6 @@ def clean_total_charges(df: pd.DataFrame) -> pd.DataFrame:
         "NaN résiduels dans TotalCharges après imputation."
     )
 
-    # Optimisation RAM : float32 suffisant pour des montants monétaires
-    df[COL_TOTAL_CHARGES] = df[COL_TOTAL_CHARGES].astype("float32")
-
     return df
 
 
@@ -128,13 +121,12 @@ def validate_and_clean(df: pd.DataFrame) -> pd.DataFrame:
     """
     Audite et nettoie les NaN restants.
     Supprime la colonne 'customerID' (non pertinente pour la modélisation).
-    Optimise les dtypes RAM.
 
     Args:
         df (pd.DataFrame): Dataset après traitement de TotalCharges.
 
     Returns:
-        pd.DataFrame: Dataset nettoyé avec dtypes optimisés.
+        pd.DataFrame: Dataset nettoyé.
     """
     df = df.copy()
 
@@ -150,16 +142,6 @@ def validate_and_clean(df: pd.DataFrame) -> pd.DataFrame:
     if COL_CUSTOMER_ID in df.columns:
         df = df.drop(columns=[COL_CUSTOMER_ID])
         print(f"[DROP] Colonne '{COL_CUSTOMER_ID}' supprimée.")
-
-    # Optimisation RAM — colonnes numériques entières
-    for col in NUMERIC_COLS:
-        if col in df.columns:
-            if pd.api.types.is_numeric_dtype(df[col]):
-                df[col] = pd.to_numeric(df[col], downcast="integer")
-
-    # Optimisation RAM — MonthlyCharges en float32
-    if "MonthlyCharges" in df.columns:
-        df["MonthlyCharges"] = df["MonthlyCharges"].astype("float32")
 
     return df
 
@@ -185,27 +167,27 @@ def transform_categorical(df: pd.DataFrame) -> pd.DataFrame:
 
     df = pd.get_dummies(df, columns=cat_cols, drop_first=True)
 
-    # Convertir les colonnes booléennes issues de get_dummies en uint8
+    # Convertir les colonnes booléennes issues de get_dummies en entiers
     bool_cols = df.select_dtypes(include=["bool"]).columns
-    df[bool_cols] = df[bool_cols].astype("uint8")
+    df[bool_cols] = df[bool_cols].astype(int)
 
     print(f"[ENCODE] Shape après encodage : {df.shape}")
     return df
 
 
 # ─────────────────────────────────────────────
-# 5. Conversion type des colonnes numériques continues
+# 5. Validation des colonnes numériques
 # ─────────────────────────────────────────────
-def transform_scale(df: pd.DataFrame) -> pd.DataFrame:
+def validate_numeric_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Convertit les colonnes 'tenure', 'MonthlyCharges' et 'TotalCharges' en float32.
+    Vérifie la présence et le format numérique des colonnes continues.
     Le scaling est délégué aux pipelines Scikit-Learn pour éviter les fuites de données.
 
     Args:
         df (pd.DataFrame): Dataset avec encodage one-hot appliqué.
 
     Returns:
-        pd.DataFrame: Dataset avec colonnes converties en float32.
+        pd.DataFrame: Dataset validé.
 
     Raises:
         AssertionError: Si une colonne est absente du DataFrame.
@@ -220,11 +202,6 @@ def transform_scale(df: pd.DataFrame) -> pd.DataFrame:
             f"La colonne '{col}' n'est pas numérique."
         )
 
-    # Optimisation RAM : float32
-    for col in COLS_TO_SCALE:
-        df[col] = df[col].astype("float32")
-
-    print(f"[CONVERT] Colonnes converties en float32 : {COLS_TO_SCALE}")
     return df
 
 
@@ -252,32 +229,24 @@ def main() -> None:
     Orchestre le pipeline de nettoyage complet des données.
 
     Étapes :
-        1. load_raw          → df_raw
-        2. clean_total_charges → df (TotalCharges propre)
-        3. validate_and_clean  → df (types optimisés, NaN auditées)
-        4. transform_categorical → df (one-hot encoding)
-        5. transform_scale      → df_final (scaled)
-        6. save_processed       → data/processed_telco.csv
+        1. load_raw               → df_raw
+        2. clean_total_charges    → df (TotalCharges propre)
+        3. validate_and_clean     → df (nettoyage NaN & customerID)
+        4. transform_categorical  → df (one-hot encoding)
+        5. validate_numeric_cols  → df_final
+        6. save_processed         → data/processed_telco.csv
     """
     print("=" * 60)
     print("  Pipeline de nettoyage — RetentionInsight AI")
     print("=" * 60)
 
-    # Mémoire avant
     df_raw = load_raw(RAW_PATH)
-    mem_before = df_raw.memory_usage(deep=True).sum() / 1024**2
-    print(f"[RAM] Mémoire avant nettoyage : {mem_before:.2f} MB")
 
     # Étapes de transformation
     df = clean_total_charges(df_raw)
     df = validate_and_clean(df)
     df = transform_categorical(df)
-    df_final = transform_scale(df)
-
-    # Mémoire après
-    mem_after = df_final.memory_usage(deep=True).sum() / 1024**2
-    print(f"[RAM] Mémoire après nettoyage : {mem_after:.2f} MB")
-    print(f"[RAM] Réduction : {(1 - mem_after / mem_before) * 100:.1f}%")
+    df_final = validate_numeric_columns(df)
 
     # Audit final des NaN
     nan_final = df_final.isna().sum().sum()

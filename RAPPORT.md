@@ -1,9 +1,7 @@
 # 📊 Rapport Final — Prédiction du Churn Client
 
 **Projet** : RetentionInsight AI  
-**Destinataires** : Équipe Dirigeante  
-**Date** : Août / Septembre 2026  
-**Auteur** : Data Scientist Senior (AIA02 — Mastère IA)
+**Date** : Septembre 2026  
 
 ---
 
@@ -137,7 +135,7 @@ Pour un client individuel à fort risque (ex. Client n°8, probabilité de churn
 | Fichier | Rôle dans le pipeline |
 | :--- | :--- |
 | **`1_eda.ipynb`** | Analyse exploratoire descriptive, visualisations et détection des anomalies |
-| **`2_cleaning.py`** | Nettoyage, imputation sans fuite et optimisation RAM (dtypes) |
+| **`2_cleaning.py`** | Nettoyage, imputation sans fuite et encodage des données |
 | **`3_modeling.py`** | Entraînement, RandomizedSearchCV, ROC superposées, SHAP et sauvegarde |
 | **`4_dashboard.py`** | Simulateur interactif Streamlit pour les équipes métiers |
 | **`5_monitoring.py`** | Détection de data drift et suivi de performance avec Evidently AI |
