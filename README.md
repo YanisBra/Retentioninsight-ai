@@ -41,8 +41,6 @@ RetentionInsight AI/
 ├── plots/                      # Visualisations (ROC, SHAP, Seuil, Importances)
 ├── reports/                    # Rapports de monitoring générés (Evidently AI)
 ├── requirements.txt            # Dépendances Python
-├── Dockerfile                  # Image Docker pour déploiement API
-├── docker-compose.yml          # Orchestration Docker
 ├── RAPPORT.md                  # Rapport exécutif destiné à la direction
 └── README.md                   # Ce fichier
 ```
@@ -111,12 +109,6 @@ source venv/bin/activate       # macOS/Linux
 # venv\Scripts\activate        # Windows
 
 pip install -r requirements.txt
-```
-
-### Via Docker
-
-```bash
-docker-compose up --build
 ```
 
 ---
