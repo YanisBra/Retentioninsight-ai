@@ -1,7 +1,6 @@
 # RetentionInsight AI 🔮
 
-> Prédiction du churn client par Machine Learning — Projet #3  
-> Directeur de projet en IA · Année 1 · L'École Multimédia
+> Prédiction du churn client par Machine Learning 
 
 ---
 
@@ -166,7 +165,3 @@ Le projet applique les principes de développement logiciel appliqués à la Dat
 * Déséquilibre de classes : 26,5 % de churners
 
 ---
-
-## Licence
-
-Projet académique — L'École Multimédia · 2026
